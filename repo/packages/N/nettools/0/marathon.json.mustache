@@ -1,0 +1,33 @@
+{
+ "id": "{{service.name}}",
+ "instances": 1,
+ "cpus": {{nettools.cpus}},
+ "mem": {{nettools.mem}},
+ "container": {
+   "type": "DOCKER",
+   "docker": {
+     "image": "{{resource.assets.container.docker.nettools}}",
+     "network": "BRIDGE",
+     "portMappings": [
+       {
+       "containerPort": 8080,
+       "protocol": "tcp",
+       "labels": {
+            "VIP_0": "/nettools:8080"
+          }
+       }
+     ]
+   }
+ },
+ "cmd": "sleep 30000",
+ "healthChecks": [
+   {
+   "protocol": "TCP",
+   "gracePeriodSeconds": 60,
+   "intervalSeconds": 5,
+   "portIndex": 0,
+   "timeoutSeconds": 5,
+   "maxConsecutiveFailures": 3
+   }
+ ]
+}
