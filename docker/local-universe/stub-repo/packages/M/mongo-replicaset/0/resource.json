@@ -1,0 +1,61 @@
+{
+  "assets": {
+    "container": {
+      "docker": {
+        "mongo-image": "mongo:4.0.12"
+      }
+    },
+    "uris": {
+      "jre-tar-gz": "https://downloads.mesosphere.com/java/openjdk-jre-8u212b03-hotspot-linux-x64.tar.gz",
+      "libmesos-bundle-tar-gz": "https://downloads.mesosphere.com/libmesos-bundle/libmesos-bundle-1.12.0.tar.gz",
+      "bootstrap-zip": "https://downloads.mesosphere.com/dcos-commons/artifacts/0.56.2/bootstrap.zip",
+      "mc-uri": "https://dl.min.io/client/mc/release/linux-amd64/mc",
+      "scheduler-zip": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mongodb/20191216-043457-XDLHh2ASiubCt0CZ/operator-scheduler.zip"
+    }
+  },
+  "images": {
+    "icon-small": "https://downloads.mesosphere.com/assets/universe/000/mongodb-icon-small.png",
+    "icon-medium": "https://downloads.mesosphere.com/assets/universe/000/mongodb-icon-medium.png",
+    "icon-large": "https://downloads.mesosphere.com/assets/universe/000/mongodb-icon-large.png"
+  },
+  "cli": {
+    "binaries": {
+      "darwin": {
+        "x86-64": {
+          "contentHash": [
+            {
+              "algo": "sha256",
+              "value": "f2631c44a42f750afd8024d395e37cab96a1e3ed77ed0b09ea9e825d959391ed"
+            }
+          ],
+          "kind": "executable",
+          "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mongodb/20191216-043457-XDLHh2ASiubCt0CZ/dcos-service-cli-darwin"
+        }
+      },
+      "linux": {
+        "x86-64": {
+          "contentHash": [
+            {
+              "algo": "sha256",
+              "value": "d04181189c97306dce3f1d6afa7a549bb2860899a8cdc5f66c31ca5e4373232d"
+            }
+          ],
+          "kind": "executable",
+          "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mongodb/20191216-043457-XDLHh2ASiubCt0CZ/dcos-service-cli-linux"
+        }
+      },
+      "windows": {
+        "x86-64": {
+          "contentHash": [
+            {
+              "algo": "sha256",
+              "value": "07d51f946355159c4fd20d7919e86a4e46613eb04a120671dc2af6237ff44560"
+            }
+          ],
+          "kind": "executable",
+          "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mongodb/20191216-043457-XDLHh2ASiubCt0CZ/dcos-service-cli.exe"
+        }
+      }
+    }
+  }
+}

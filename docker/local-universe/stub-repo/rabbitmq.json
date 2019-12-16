@@ -1,0 +1,302 @@
+{
+  "packagingVersion": "4.0",
+  "upgradesFrom": [
+    "*"
+  ],
+  "downgradesTo": [
+    "*"
+  ],
+  "minDcosReleaseVersion": "1.12",
+  "name": "rabbitmq",
+  "version": "0.1.0-3.7.17",
+  "maintainer": "hge@d2iq.com",
+  "description": "Rabbitmq cluster on DC/OS",
+  "selected": false,
+  "framework": true,
+  "tags": [
+    "0.1.0",
+    "rabbitmq"
+  ],
+  "postInstallNotes": "DC/OS rabbitmq is being installed!\n\n\tDocumentation: https://docs.mesosphere.com/service-docs/rabbitmq/\n\tIssues: https://docs.mesosphere.com/support/",
+  "postUninstallNotes": "DC/OS rabbitmq is being uninstalled.",
+  "releaseVersion": 0,
+  "lastUpdated": 1575353642,
+  "config": {
+    "type": "object",
+    "properties": {
+      "service": {
+        "type": "object",
+        "description": "DC/OS service configuration properties",
+        "properties": {
+          "name": {
+            "description": "The name of the service instance",
+            "type": "string",
+            "default": "rabbitmq",
+            "title": "Service name"
+          },
+          "user": {
+            "description": "The user that the service will run as.",
+            "type": "string",
+            "default": "root",
+            "title": "User"
+          },
+          "service_account": {
+            "description": "The service account for DC/OS service authentication. This is typically left empty to use the default unless service authentication is needed. The value given here is passed as the principal of Mesos framework.",
+            "type": "string",
+            "default": ""
+          },
+          "service_account_secret": {
+            "description": "Name of the Secret Store credentials to use for DC/OS service authentication. This should be left empty unless service authentication is needed.",
+            "type": "string",
+            "default": "",
+            "title": "Credential secret name (optional)"
+          },
+          "virtual_network_enabled": {
+            "description": "Enable virtual networking",
+            "type": "boolean",
+            "default": true
+          },
+          "virtual_network_name": {
+            "description": "The name of the virtual network to join",
+            "type": "string",
+            "default": "dcos"
+          },
+          "virtual_network_plugin_labels": {
+            "description": "Labels to pass to the virtual network plugin. Comma-separated key:value pairs. For example: k_0:v_0,k_1:v_1,...,k_n:v_n",
+            "type": "string",
+            "default": ""
+          },
+          "log_level": {
+            "description": "The log level for the DC/OS service.",
+            "type": "string",
+            "enum": [
+              "OFF",
+              "FATAL",
+              "ERROR",
+              "WARN",
+              "INFO",
+              "DEBUG",
+              "TRACE",
+              "ALL"
+            ],
+            "default": "INFO"
+          },
+          "placement_constraint": {
+            "title": "Placement constraint",
+            "description": "Marathon-style placement constraint for scheduler. Example: 'hostname:UNIQUE'. By the way since the framework requires specific ports UNIQUE constraints is implicit.",
+            "type": "string",
+            "default": ""
+          },
+          "sleep": {
+            "description": "The sleep duration in seconds before tasks exit.",
+            "type": "number",
+            "default": 1000
+          }
+        },
+        "required": [
+          "name",
+          "sleep",
+          "user"
+        ]
+      },
+      "rabbitmq-resources": {
+        "description": "RabbitMQ nodes resources properties",
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Node count",
+            "description": "Number of Template pods to run",
+            "type": "integer",
+            "default": 3
+          },
+          "cpus": {
+            "title": "CPU count",
+            "description": "Template pod CPU requirements",
+            "type": "number",
+            "default": 1
+          },
+          "mem": {
+            "title": "Memory size (MB)",
+            "description": "Template pod mem requirements (in MB)",
+            "type": "integer",
+            "default": 1024
+          },
+          "disk": {
+            "title": "Disk size (MB)",
+            "description": "Template pod persistent disk requirements (in MB)",
+            "type": "integer",
+            "default": 1024
+          },
+          "disk_type": {
+            "title": "Disk type [ROOT, MOUNT]",
+            "description": "Mount volumes require preconfiguration in DC/OS",
+            "type": "string",
+            "enum": [
+              "ROOT",
+              "MOUNT"
+            ],
+            "default": "ROOT"
+          },
+          "docker_image": {
+            "title": "Docker image",
+            "description": "docker image to use",
+            "type": "string",
+            "default": "hyge/rabbitmq:3.7.17-management"
+          },
+          "placement_constraint": {
+            "title": "Placement constraint",
+            "description": "Placement constraints for rabbitmq servers. Example: [[\"hostname\", \"UNIQUE\"]]",
+            "type": "string",
+            "default": "[[\"hostname\", \"UNIQUE\"]]",
+            "media": {
+              "type": "application/x-zone-constraints+json"
+            }
+          }
+        },
+        "required": [
+          "count",
+          "cpus",
+          "mem",
+          "disk",
+          "disk_type",
+          "docker_image"
+        ]
+      },
+      "rabbitmq-configuration": {
+        "description": "RabbitMQ configuration properties",
+        "type": "object",
+        "properties": {
+          "amqp_port": {
+            "title": "AMQP port",
+            "description": "The port where rabbitmq will listen for processing messages",
+            "type": "integer",
+            "default": 5672
+          },
+          "mgmt_port": {
+            "title": "RabbitMQ HTTP listener port",
+            "description": "The port where rabbitmq management console will listen",
+            "type": "integer",
+            "default": 15672
+          },
+          "cluster_name": {
+            "title": "Cluster Name",
+            "description": "[UNIMPLEMENTED] set the cluster name",
+            "type": "string",
+            "default": "rabbit"
+          },
+          "erlang_cookie": {
+            "title": "Erlang cookie",
+            "description": "The port where rabbitmq will listen",
+            "type": "string",
+            "default": "joinuswehavecookies"
+          },
+          "dist_port": {
+            "title": "DIST port",
+            "description": "The port where rabbitmq will listen for clustering",
+            "type": "integer",
+            "default": 25672
+          },
+          "epmd_port": {
+            "title": "EPMD port",
+            "description": "The port where rabbitmq will listen for processing messages",
+            "type": "integer",
+            "default": 4369
+          },
+          "default_pass": {
+            "title": "Default Password",
+            "description": "The default password",
+            "type": "string",
+            "default": "password"
+          },
+          "default_user": {
+            "title": "Default Admin username",
+            "description": "The default admin username",
+            "type": "string",
+            "default": "admin"
+          },
+          "log_level": {
+            "description": "The log level for the rabbitmq server.",
+            "type": "string",
+            "enum": [
+              "error",
+              "warning",
+              "info",
+              "debug"
+            ],
+            "default": "info"
+          }
+        },
+        "required": [
+          "amqp_port",
+          "mgmt_port",
+          "cluster_name",
+          "erlang_cookie"
+        ]
+      }
+    }
+  },
+  "marathon": {
+    "v2AppMustacheTemplate": "CnsKICAiaWQiOiAie3tzZXJ2aWNlLm5hbWV9fSIsCiAgImNwdXMiOiAxLjAsCiAgIm1lbSI6IDEwMjQsCiAgImluc3RhbmNlcyI6IDEsCiAgInVzZXIiOiAie3tzZXJ2aWNlLnVzZXJ9fSIsCiAgImNtZCI6ICJleHBvcnQgTERfTElCUkFSWV9QQVRIPSRNRVNPU19TQU5EQk9YL2xpYm1lc29zLWJ1bmRsZS9saWI6JExEX0xJQlJBUllfUEFUSDsgZXhwb3J0IE1FU09TX05BVElWRV9KQVZBX0xJQlJBUlk9JChscyAkTUVTT1NfU0FOREJPWC9saWJtZXNvcy1idW5kbGUvbGliL2xpYm1lc29zLSouc28pOyBleHBvcnQgSkFWQV9IT01FPSQobHMgLWQgJE1FU09TX1NBTkRCT1gvamRrKik7IGV4cG9ydCBKQVZBX0hPTUU9JHtKQVZBX0hPTUUlJS99OyBleHBvcnQgUEFUSD0kKGxzIC1kICRKQVZBX0hPTUUvYmluKTokUEFUSCAmJiBleHBvcnQgSkFWQV9PUFRTPVwiLVhtczI1Nk0gLVhteDUxMk0gLVhYOi1IZWFwRHVtcE9uT3V0T2ZNZW1vcnlFcnJvclwiICYmIC4vYm9vdHN0cmFwIC1yZXNvbHZlPWZhbHNlIC10ZW1wbGF0ZT1mYWxzZSAmJiAuL29wZXJhdG9yLXNjaGVkdWxlci9iaW4vcmFiYml0bXEgLi9vcGVyYXRvci1zY2hlZHVsZXIvc3ZjLnltbCIsCiAgImxhYmVscyI6IHsKICAgICJEQ09TX0NPTU1PTlNfQVBJX1ZFUlNJT04iOiAidjEiLAogICAgIkRDT1NfQ09NTU9OU19VTklOU1RBTEwiOiAidHJ1ZSIsCiAgICAiRENPU19QQUNLQUdFX0ZSQU1FV09SS19OQU1FIjogInt7c2VydmljZS5uYW1lfX0iLAogICAgIk1BUkFUSE9OX1NJTkdMRV9JTlNUQU5DRV9BUFAiOiAidHJ1ZSIsCiAgICAiRENPU19TRVJWSUNFX05BTUUiOiAie3tzZXJ2aWNlLm5hbWV9fSIsCiAgICAiRENPU19TRVJWSUNFX1BPUlRfSU5ERVgiOiAiMCIsCiAgICAiRENPU19TRVJWSUNFX1NDSEVNRSI6ICJodHRwIgogIH0sCiAge3sjc2VydmljZS5zZXJ2aWNlX2FjY291bnRfc2VjcmV0fX0KICAic2VjcmV0cyI6IHsKICAgICJzZXJ2aWNlQ3JlZGVudGlhbCI6IHsKICAgICAgInNvdXJjZSI6ICJ7e3NlcnZpY2Uuc2VydmljZV9hY2NvdW50X3NlY3JldH19IgogICAgfQogIH0sCiAge3svc2VydmljZS5zZXJ2aWNlX2FjY291bnRfc2VjcmV0fX0KICAiZW52IjogewogICAge3sjc2VydmljZS52aXJ0dWFsX25ldHdvcmtfZW5hYmxlZH19CiAgICAiRU5BQkxFX1ZJUlRVQUxfTkVUV09SSyI6ICJ5ZXMiLAogICAgIlZJUlRVQUxfTkVUV09SS19OQU1FIjogInt7c2VydmljZS52aXJ0dWFsX25ldHdvcmtfbmFtZX19IiwKICAgICJWSVJUVUFMX05FVFdPUktfUExVR0lOX0xBQkVMUyI6ICJ7e3NlcnZpY2UudmlydHVhbF9uZXR3b3JrX3BsdWdpbl9sYWJlbHN9fSIsCiAgICB7ey9zZXJ2aWNlLnZpcnR1YWxfbmV0d29ya19lbmFibGVkfX0KICAgICJQQUNLQUdFX05BTUUiOiAicmFiYml0bXEiLAogICAgIlBBQ0tBR0VfVkVSU0lPTiI6ICJzdHViLXVuaXZlcnNlIiwKICAgICJQQUNLQUdFX0JVSUxEX1RJTUVfRVBPQ0hfTVMiOiAiMTU3NTM1MzY0MTEwNiIsCiAgICAiUEFDS0FHRV9CVUlMRF9USU1FX1NUUiI6ICJUdWUgRGVjIDAzIDIwMTkgMDY6MTQ6MDEgKzAwMDAiLAogICAgIlNFUlZJQ0VfTkFNRSI6ICJ7e3NlcnZpY2UubmFtZX19IiwKICAgICJTRVJWSUNFX1VTRVIiOiAie3tzZXJ2aWNlLnVzZXJ9fSIsCiAgICAiU0VSVklDRV9QUklOQ0lQQUwiOiAie3tzZXJ2aWNlLnByaW5jaXBhbH19IiwKICAgICJGUkFNRVdPUktfTE9HX0xFVkVMIjogInt7c2VydmljZS5sb2dfbGV2ZWx9fSIsCiAgICAiTUVTT1NfQVBJX1ZFUlNJT04iOiAie3tzZXJ2aWNlLm1lc29zX2FwaV92ZXJzaW9ufX0iLAogICAgIlJBQkJJVE1RX1JFU19DT1VOVCI6ICJ7e3JhYmJpdG1xLXJlc291cmNlcy5jb3VudH19IiwKICAgICJSQUJCSVRNUV9TVkNfUExBQ0VNRU5UIjogInt7c2VydmljZS5wbGFjZW1lbnRfY29uc3RyYWludH19IiwKICAgICJSQUJCSVRNUV9SRVNfQ1BVUyI6ICJ7e3JhYmJpdG1xLXJlc291cmNlcy5jcHVzfX0iLAogICAgIlJBQkJJVE1RX1JFU19NRU0iOiAie3tyYWJiaXRtcS1yZXNvdXJjZXMubWVtfX0iLAogICAgIlJBQkJJVE1RX1JFU19ESVNLIjogInt7cmFiYml0bXEtcmVzb3VyY2VzLmRpc2t9fSIsCiAgICAiUkFCQklUTVFfUkVTX0RJU0tfVFlQRSI6ICJ7e3JhYmJpdG1xLXJlc291cmNlcy5kaXNrX3R5cGV9fSIsCiAgICAiUkFCQklUTVFfUkVTX0RPQ0tFUl9JTUFHRSI6ICJ7eyByYWJiaXRtcS1yZXNvdXJjZXMuZG9ja2VyX2ltYWdlIH19IiwKICAgICJSQUJCSVRNUV9SRVNfUExBQ0VNRU5UIjogInt7cmFiYml0bXEtcmVzb3VyY2VzLnBsYWNlbWVudF9jb25zdHJhaW50fX0iLAoKICAgICJSQUJCSVRNUV9DRkdfTk9ERV9FUE1EX1BPUlQiOiAie3tyYWJiaXRtcS1jb25maWd1cmF0aW9uLmVwbWRfcG9ydH19IiwKICAgICJSQUJCSVRNUV9DRkdfTk9ERV9BTVFQX1BPUlQiOiAie3tyYWJiaXRtcS1jb25maWd1cmF0aW9uLmFtcXBfcG9ydH19IiwKCiAgICAiUkFCQklUTVFfQ0ZHX05PREVfRElTVF9QT1JUIjogInt7cmFiYml0bXEtY29uZmlndXJhdGlvbi5kaXN0X3BvcnR9fSIsCiAgICAiUkFCQklUTVFfQ0ZHX01HTVRfUE9SVCI6ICJ7e3JhYmJpdG1xLWNvbmZpZ3VyYXRpb24ubWdtdF9wb3J0fX0iLAogICAgIlJBQkJJVE1RX0NGR19FUkxBTkdfQ09PS0lFIjogInt7cmFiYml0bXEtY29uZmlndXJhdGlvbi5lcmxhbmdfY29va2llfX0iLAogICAgIlJBQkJJVE1RX0NGR19DTFVTVEVSX05BTUUiOiAie3sgcmFiYml0bXEtY29uZmlndXJhdGlvbi5jbHVzdGVyX25hbWUgfX0iLAogICAgIlJBQkJJVE1RX0xPR19MRVZFTCI6ICJ7eyByYWJiaXRtcS1jb25maWd1cmF0aW9uLmxvZ19sZXZlbCB9fSIsCgogICAgIlJBQkJJVE1RX0RFRkFVTFRfUEFTUyI6Int7cmFiYml0bXEtY29uZmlndXJhdGlvbi5kZWZhdWx0X3Bhc3N9fSIsCiAgICAiUkFCQklUTVFfREVGQVVMVF9VU0VSIjoie3tyYWJiaXRtcS1jb25maWd1cmF0aW9uLmRlZmF1bHRfdXNlcn19IiwKCiAgICAiSkFWQV9VUkkiOiAie3tyZXNvdXJjZS5hc3NldHMudXJpcy5qcmUtdGFyLWd6fX0iLAogICAgIkVYRUNVVE9SX1VSSSI6ICJ7e3Jlc291cmNlLmFzc2V0cy51cmlzLmV4ZWN1dG9yLXppcH19IiwKICAgICJCT09UU1RSQVBfVVJJIjogInt7cmVzb3VyY2UuYXNzZXRzLnVyaXMuYm9vdHN0cmFwLXppcH19IiwKCiAgICB7eyNzZXJ2aWNlLnNlcnZpY2VfYWNjb3VudF9zZWNyZXR9fQogICAgIkRDT1NfU0VSVklDRV9BQ0NPVU5UX0NSRURFTlRJQUwiOiB7ICJzZWNyZXQiOiAic2VydmljZUNyZWRlbnRpYWwiIH0sCiAgICAiTUVTT1NfTU9EVUxFUyI6ICJ7XCJsaWJyYXJpZXNcIjpbe1wiZmlsZVwiOlwibGlibWVzb3MtYnVuZGxlXC9saWJcL21lc29zXC9saWJkY29zX3NlY3VyaXR5LnNvXCIsXCJtb2R1bGVzXCI6W3tcIm5hbWVcIjogXCJjb21fbWVzb3NwaGVyZV9kY29zX0NsYXNzaWNSUENBdXRoZW50aWNhdGVlXCJ9LHtcIm5hbWVcIjpcImNvbV9tZXNvc3BoZXJlX2Rjb3NfaHR0cF9BdXRoZW50aWNhdGVlXCIsXCJwYXJhbWV0ZXJzXCI6W3tcImtleVwiOlwiand0X2V4cF90aW1lb3V0XCIsXCJ2YWx1ZVwiOlwiNW1pbnNcIn0se1wia2V5XCI6XCJwcmVlbXB0aXZlX3JlZnJlc2hfZHVyYXRpb25cIixcInZhbHVlXCI6XCIzMG1pbnNcIn1dfV19XX0iLAogICAgIk1FU09TX0FVVEhFTlRJQ0FURUUiOiAiY29tX21lc29zcGhlcmVfZGNvc19DbGFzc2ljUlBDQXV0aGVudGljYXRlZSIsCiAgICAiTUVTT1NfSFRUUF9BVVRIRU5USUNBVEVFIjogImNvbV9tZXNvc3BoZXJlX2Rjb3NfaHR0cF9BdXRoZW50aWNhdGVlIiwKICAgIHt7L3NlcnZpY2Uuc2VydmljZV9hY2NvdW50X3NlY3JldH19CiAgICAiTElCTUVTT1NfVVJJIjogInt7cmVzb3VyY2UuYXNzZXRzLnVyaXMubGlibWVzb3MtYnVuZGxlLXRhci1nen19IgogIH0sCiAgInVyaXMiOiBbCiAgICAie3tyZXNvdXJjZS5hc3NldHMudXJpcy5ib290c3RyYXAtemlwfX0iLAogICAgInt7cmVzb3VyY2UuYXNzZXRzLnVyaXMuanJlLXRhci1nen19IiwKICAgICJ7e3Jlc291cmNlLmFzc2V0cy51cmlzLnNjaGVkdWxlci16aXB9fSIsCiAgICAie3tyZXNvdXJjZS5hc3NldHMudXJpcy5saWJtZXNvcy1idW5kbGUtdGFyLWd6fX0iCiAgXSwKICAidXBncmFkZVN0cmF0ZWd5Ijp7CiAgICAibWluaW11bUhlYWx0aENhcGFjaXR5IjogMCwKICAgICJtYXhpbXVtT3ZlckNhcGFjaXR5IjogMAogIH0sCiAgImhlYWx0aENoZWNrcyI6IFsKICAgIHsKICAgICAgInByb3RvY29sIjogIk1FU09TX0hUVFAiLAogICAgICAicGF0aCI6ICIvdjEvaGVhbHRoIiwKICAgICAgImdyYWNlUGVyaW9kU2Vjb25kcyI6IDkwMCwKICAgICAgImludGVydmFsU2Vjb25kcyI6IDMwLAogICAgICAicG9ydEluZGV4IjogMCwKICAgICAgInRpbWVvdXRTZWNvbmRzIjogMzAsCiAgICAgICJtYXhDb25zZWN1dGl2ZUZhaWx1cmVzIjogMAogICAgfQogIF0sCiAgInBvcnREZWZpbml0aW9ucyI6IFsKICAgIHsKICAgICAgInBvcnQiOiAwLAogICAgICAicHJvdG9jb2wiOiAidGNwIiwKICAgICAgIm5hbWUiOiAiYXBpIiwKICAgICAgImxhYmVscyI6IHsgIlZJUF8wIjogIi9hcGkue3tzZXJ2aWNlLm5hbWV9fTo4MCIgfQogICAgfQogIF0KfQo="
+  },
+  "resource": {
+    "assets": {
+      "uris": {
+        "jre-tar-gz": "https://downloads.mesosphere.com/java/openjdk-jre-8u212b03-hotspot-linux-x64.tar.gz",
+        "libmesos-bundle-tar-gz": "https://downloads.mesosphere.com/libmesos-bundle/libmesos-bundle-1.14-beta.tar.gz",
+        "bootstrap-zip": "https://downloads.mesosphere.com/dcos-commons/artifacts/0.56.3/bootstrap.zip",
+        "scheduler-zip": "https://hge-dcos.s3.amazonaws.com/autodelete7d/rabbitmq/20191203-061358-b4NxWGkAhp3VmYtj/operator-scheduler.zip",
+        "mc-uri": "https://dl.minio.io/client/mc/release/linux-amd64/mc"
+      },
+      "container": {
+        "docker": {
+          "rabbitmq": "hyge/rabbitmq:3.7.17-management"
+        }
+      }
+    },
+    "images": {
+      "icon-small": "https://github.com/rabbitmq/rabbitmq-website/blob/master/site/img/rabbitmq_logo_30x30.png?raw=true",
+      "icon-medium": "https://github.com/rabbitmq/rabbitmq-website/blob/master/site/img/rabbitmq_logo_30x30.png?raw=true",
+      "icon-large": "https://github.com/rabbitmq/rabbitmq-website/blob/master/site/img/rabbitmq_logo_30x30.png?raw=true"
+    },
+    "cli": {
+      "binaries": {
+        "darwin": {
+          "x86-64": {
+            "contentHash": [
+              {
+                "algo": "sha256",
+                "value": "cc1f17a9b1e5154b7da7e448defd62cf82faf69ed12f9975b1e1e7c30bc9da16"
+              }
+            ],
+            "kind": "executable",
+            "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/rabbitmq/20191203-061358-b4NxWGkAhp3VmYtj/dcos-service-cli-darwin"
+          }
+        },
+        "linux": {
+          "x86-64": {
+            "contentHash": [
+              {
+                "algo": "sha256",
+                "value": "d191b52e8641b41d770ad86de0e9b4524cd2cc77251762080ceba7656d1baf10"
+              }
+            ],
+            "kind": "executable",
+            "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/rabbitmq/20191203-061358-b4NxWGkAhp3VmYtj/dcos-service-cli-linux"
+          }
+        },
+        "windows": {
+          "x86-64": {
+            "contentHash": [
+              {
+                "algo": "sha256",
+                "value": "be725657f3d6967802885dccd0a98051647f753119728a2ecfb434b3e83dde5a"
+              }
+            ],
+            "kind": "executable",
+            "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/rabbitmq/20191203-061358-b4NxWGkAhp3VmYtj/dcos-service-cli.exe"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "packagingVersion": "4.0",
+  "upgradesFrom": [
+    "0.3.8-5.7.25"
+  ],
+  "downgradesTo": [
+    "0.3.8-5.7.25"
+  ],
+  "minDcosReleaseVersion": "1.9",
+  "name": "mysql-cluster",
+  "version": "0.3.17-5.7.25",
+  "maintainer": "support@YOURNAMEHERE.COM",
+  "description": "YOURNAMEHERE on  DC/OS",
+  "selected": false,
+  "framework": true,
+  "tags": [
+    "0.42.1",
+    "mysql"
+  ],
+  "postInstallNotes": "DC/OS YOURNAMEHERE is being installed!\n\n\tDocumentation: https://docs.mesosphere.com/service-docs/mysql/\n\tIssues: https://docs.mesosphere.com/support/",
+  "postUninstallNotes": "DC/OS YOURNAMEHERE is being uninstalled."
+}

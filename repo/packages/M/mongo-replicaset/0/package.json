@@ -1,0 +1,23 @@
+{
+  "packagingVersion": "4.0",
+  "upgradesFrom": [
+    "3.2-0.2"
+  ],
+  "downgradesTo": [
+    "3.2-0.2"
+  ],
+  "minDcosReleaseVersion": "1.13",
+  "name": "mongo-replicaset",
+  "version": "0.2.10-4.0.12",
+  "maintainer": "support@mongo-replicaset.COM",
+  "description": "mongo-replicaset on DC/OS",
+  "selected": false,
+  "framework": true,
+  "tags": [
+    "nosql",
+    "document",
+    "mongo"
+  ],
+  "postInstallNotes": "DC/OS mongo-replicaset is being installed!\n\n\tDocumentation: https://docs.mesosphere.com/service-docs/mongodb/\n\tIssues: https://docs.mesosphere.com/support/",
+  "postUninstallNotes": "DC/OS mongo-replicaset is being uninstalled."
+}

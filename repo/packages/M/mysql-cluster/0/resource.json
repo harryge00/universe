@@ -1,0 +1,68 @@
+{
+  "assets": {
+    "uris": {
+      "jre-tar-gz": "https://downloads.mesosphere.com/java/openjdk-jre-8u212b03-hotspot-linux-x64.tar.gz",
+      "libmesos-bundle-tar-gz": "https://downloads.mesosphere.com/libmesos-bundle/libmesos-bundle-1.12.0.tar.gz",
+      "bootstrap-zip": "https://downloads.mesosphere.com/dcos-commons/artifacts/0.56.2/bootstrap.zip",
+      "scheduler-zip": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mysql/20191216-043920-NZWnJamiJKPwqg6d/operator-scheduler.zip",
+      "mc-uri": "https://dl.minio.io/client/mc/release/linux-amd64/mc",
+      "mysql-exe-uri": "https://www.cuucloud.com/mysql-exe.tar.gz",
+      "haproxy-uri": "https://www.cuucloud.com/haproxy.cfg",
+      "zk-uri": "https://s3-ap-northeast-1.amazonaws.com/pxc-utils/zookeepercli-linux-amd64-binary.tar.gz"
+    },
+    "container": {
+      "docker": {
+        "mysqlserver": "darrel999/mysql-xtrabackup:latest",
+        "haproxy": "darrel999/haproxy-docker-logging:2.0.8",
+        "mysqlfailover": "darrel999/failover:v1.6.5",
+        "failoverexporter": "darrel999/failover-exporter:v1.0",
+        "exporter": "prom/mysqld-exporter:v0.12.1"
+      }
+    }
+  },
+  "images": {
+    "icon-small": "https://downloads.mesosphere.com/assets/universe/000/mysql-icon-small.png",
+    "icon-medium": "https://downloads.mesosphere.com/assets/universe/000/mysql-icon-medium.png",
+    "icon-large": "https://downloads.mesosphere.com/assets/universe/000/mysql-icon-large.png"
+  },
+  "cli": {
+    "binaries": {
+      "darwin": {
+        "x86-64": {
+          "contentHash": [
+            {
+              "algo": "sha256",
+              "value": "7b2fd3baa78bb2b69cd36a8f6f7a2a84b81d237e76ff5a05e4551bb1ee65bde2"
+            }
+          ],
+          "kind": "executable",
+          "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mysql/20191216-043920-NZWnJamiJKPwqg6d/dcos-service-cli-darwin"
+        }
+      },
+      "linux": {
+        "x86-64": {
+          "contentHash": [
+            {
+              "algo": "sha256",
+              "value": "004a0fa74c3445b5fe260df5cfed3749123d8a0195f2666926db384fb5bd15fa"
+            }
+          ],
+          "kind": "executable",
+          "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mysql/20191216-043920-NZWnJamiJKPwqg6d/dcos-service-cli-linux"
+        }
+      },
+      "windows": {
+        "x86-64": {
+          "contentHash": [
+            {
+              "algo": "sha256",
+              "value": "869baed9de8f026c1d6d19755404b4982fafe97bbfa2bdf7df8fab447d6fcc7c"
+            }
+          ],
+          "kind": "executable",
+          "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mysql/20191216-043920-NZWnJamiJKPwqg6d/dcos-service-cli.exe"
+        }
+      }
+    }
+  }
+}

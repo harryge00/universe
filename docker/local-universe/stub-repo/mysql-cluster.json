@@ -1,0 +1,299 @@
+{
+  "packagingVersion": "4.0",
+  "upgradesFrom": [
+    "0.3.8-5.7.25"
+  ],
+  "downgradesTo": [
+    "0.3.8-5.7.25"
+  ],
+  "minDcosReleaseVersion": "1.9",
+  "name": "mysql-cluster",
+  "version": "0.3.17-5.7.25",
+  "maintainer": "support@YOURNAMEHERE.COM",
+  "description": "YOURNAMEHERE on  DC/OS",
+  "selected": false,
+  "framework": true,
+  "tags": [
+    "0.42.1",
+    "mysql"
+  ],
+  "postInstallNotes": "DC/OS YOURNAMEHERE is being installed!\n\n\tDocumentation: https://docs.mesosphere.com/service-docs/mysql/\n\tIssues: https://docs.mesosphere.com/support/",
+  "postUninstallNotes": "DC/OS YOURNAMEHERE is being uninstalled.",
+  "releaseVersion": 0,
+  "config": {
+    "type": "object",
+    "properties": {
+      "service": {
+        "type": "object",
+        "description": "DC/OS service configuration properties",
+        "properties": {
+          "name": {
+            "description": "The name of the service instance",
+            "type": "string",
+            "default": "mysql",
+            "title": "Service name",
+            "minLength": 3,
+            "maxLength": 18
+          },
+          "user": {
+            "description": "The user that the service will run as.",
+            "type": "string",
+            "default": "root",
+            "title": "User"
+          },
+          "service_account": {
+            "description": "The service account for DC/OS service authentication. This is typically left empty to use the default unless service authentication is needed. The value given here is passed as the principal of Mesos framework.",
+            "type": "string",
+            "default": ""
+          },
+          "service_account_secret": {
+            "description": "Name of the Secret Store credentials to use for DC/OS service authentication. This should be left empty unless service authentication is needed.",
+            "type": "string",
+            "default": "",
+            "title": "Credential secret name (optional)"
+          },
+          "virtual_network_enabled": {
+            "description": "Enable virtual networking",
+            "type": "boolean",
+            "default": true
+          },
+          "virtual_network_name": {
+            "description": "The name of the virtual network to join",
+            "type": "string",
+            "default": "dcos"
+          },
+          "virtual_network_plugin_labels": {
+            "description": "Labels to pass to the virtual network plugin. Comma-separated key:value pairs. For example: k_0:v_0,k_1:v_1,...,k_n:v_n",
+            "type": "string",
+            "default": ""
+          },
+          "log_level": {
+            "description": "The log level for the DC/OS service.",
+            "type": "string",
+            "enum": [
+              "OFF",
+              "FATAL",
+              "ERROR",
+              "WARN",
+              "INFO",
+              "DEBUG",
+              "TRACE",
+              "ALL"
+            ],
+            "default": "INFO"
+          },
+          "sleep": {
+            "description": "The sleep duration in seconds before tasks exit.",
+            "type": "number",
+            "default": 1000
+          }
+        },
+        "required": [
+          "name",
+          "sleep",
+          "user"
+        ]
+      },
+      "database": {
+        "type": "object",
+        "description": "MySQL database configuration properties",
+        "properties": {
+          "root_password": {
+            "description": "Specifies the password that will be set for the MySQL root superuser account.",
+            "type": "string",
+            "default": "123456"
+          },
+          "master_cnf": {
+            "description": "Specifies the mysql config file location ",
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "mysql": {
+        "description": "mysql  pod configuration properties",
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "mysql  Node count",
+            "description": "mysql Number of mysql pods to run",
+            "type": "integer",
+            "default": 3
+          },
+          "placement_constraint": {
+            "title": "Placement constraint",
+            "description": "Placement constraints for nodes. Example: [[\"hostname\", \"UNIQUE\"]]",
+            "type": "string",
+            "default": "[[\"hostname\", \"UNIQUE\"]]",
+            "media": {
+              "type": "application/x-zone-constraints+json"
+            }
+          },
+          "cpus": {
+            "title": "CPU count",
+            "description": "mysql pod CPU requirements",
+            "type": "number",
+            "default": 0.1
+          },
+          "mem": {
+            "title": "Memory size (MB)",
+            "description": "mysql pod mem requirements (in MB)",
+            "type": "integer",
+            "default": 1024
+          },
+          "disk": {
+            "title": "Disk size (MB)",
+            "description": "mysql pod persistent disk requirements (in MB)",
+            "type": "integer",
+            "default": 1024
+          },
+          "innodb_buffer_pool_size": {
+            "title": "innodb_buffer_pool_size (MB)",
+            "description": "mysql innodb_buffer_pool_size requirements (in MB)",
+            "type": "integer",
+            "default": 1024
+          },
+          "disk_type": {
+            "title": "Disk type [ROOT, MOUNT]",
+            "description": "Mount volumes require preconfiguration in DC/OS",
+            "enum": [
+              "ROOT",
+              "MOUNT"
+            ],
+            "default": "ROOT"
+          },
+          "backup_store_endpoint": {
+            "title": "Backup Store Endpoint",
+            "description": "Backup service requires an endpoint of a S3 compatible Storage system",
+            "type": "string",
+            "default": "http://miniod.minio.l4lb.thisdcos.directory:9000"
+          },
+          "backup_store_servicename": {
+            "title": "Backup Store Servicename",
+            "description": "Backup service requires an servicename ",
+            "type": "string",
+            "default": "servicename"
+          },
+          "username": {
+            "description": "The username s3.",
+            "type": "string",
+            "default": "minio"
+          },
+          "password": {
+            "description": "The password s3.",
+            "type": "string",
+            "default": "minio123"
+          },
+          "backup_disk_type": {
+            "title": "Disk type [ROOT, MOUNT]",
+            "description": "backup Mount volumes require preconfiguration in DC/OS",
+            "enum": [
+              "ROOT",
+              "MOUNT"
+            ],
+            "default": "ROOT"
+          },
+          "backup_disk": {
+            "title": "Disk size (MB)",
+            "description": "mysql pod persistent disk requirements (in MB)",
+            "type": "integer",
+            "default": 1024
+          },
+          "restore_disk_type": {
+            "title": "Disk type [ROOT, MOUNT]",
+            "description": "Mount volumes require preconfiguration in DC/OS",
+            "enum": [
+              "ROOT",
+              "MOUNT"
+            ],
+            "default": "ROOT"
+          },
+          "restore_disk": {
+            "title": "Disk size (MB)",
+            "description": "mysql pod persistent disk requirements (in MB)",
+            "type": "integer",
+            "default": 1024
+          }
+        },
+        "required": [
+          "count",
+          "cpus",
+          "mem",
+          "disk",
+          "disk_type"
+        ]
+      }
+    }
+  },
+  "marathon": {
+    "v2AppMustacheTemplate": "CnsKICAiaWQiOiAie3tzZXJ2aWNlLm5hbWV9fSIsCiAgImNwdXMiOiAxLjAsCiAgIm1lbSI6IDEwMjQsCiAgImluc3RhbmNlcyI6IDEsCiAgInVzZXIiOiAie3tzZXJ2aWNlLnVzZXJ9fSIsCiAgImNtZCI6ICJleHBvcnQgTERfTElCUkFSWV9QQVRIPSRNRVNPU19TQU5EQk9YL2xpYm1lc29zLWJ1bmRsZS9saWI6JExEX0xJQlJBUllfUEFUSDsgZXhwb3J0IE1FU09TX05BVElWRV9KQVZBX0xJQlJBUlk9JChscyAkTUVTT1NfU0FOREJPWC9saWJtZXNvcy1idW5kbGUvbGliL2xpYm1lc29zLSouc28pOyBleHBvcnQgSkFWQV9IT01FPSQobHMgLWQgJE1FU09TX1NBTkRCT1gvamRrKik7IGV4cG9ydCBKQVZBX0hPTUU9JHtKQVZBX0hPTUUlJS99OyBleHBvcnQgUEFUSD0kKGxzIC1kICRKQVZBX0hPTUUvYmluKTokUEFUSCAmJiBleHBvcnQgSkFWQV9PUFRTPVwiLVhtczI1Nk0gLVhteDUxMk0gLVhYOi1IZWFwRHVtcE9uT3V0T2ZNZW1vcnlFcnJvclwiICYmIC4vYm9vdHN0cmFwIC1yZXNvbHZlPWZhbHNlIC10ZW1wbGF0ZT10cnVlICYmIC4vb3BlcmF0b3Itc2NoZWR1bGVyL2Jpbi9teXNxbCAuL29wZXJhdG9yLXNjaGVkdWxlci9zdmMueW1sIiwKICAibGFiZWxzIjogewogICAgIkRDT1NfQ09NTU9OU19BUElfVkVSU0lPTiI6ICJ2MSIsCiAgICAiRENPU19DT01NT05TX1VOSU5TVEFMTCI6ICJ0cnVlIiwKICAgICJEQ09TX1BBQ0tBR0VfRlJBTUVXT1JLX05BTUUiOiAie3tzZXJ2aWNlLm5hbWV9fSIsCiAgICAiTUFSQVRIT05fU0lOR0xFX0lOU1RBTkNFX0FQUCI6ICJ0cnVlIiwKICAgICJEQ09TX1NFUlZJQ0VfTkFNRSI6ICJ7e3NlcnZpY2UubmFtZX19IiwKICAgICJEQ09TX1NFUlZJQ0VfUE9SVF9JTkRFWCI6ICIwIiwKICAgICJEQ09TX1NFUlZJQ0VfU0NIRU1FIjogImh0dHAiCiAgfSwKICB7eyNzZXJ2aWNlLnNlcnZpY2VfYWNjb3VudF9zZWNyZXR9fQogICJzZWNyZXRzIjogewogICAgInNlcnZpY2VDcmVkZW50aWFsIjogewogICAgICAic291cmNlIjogInt7c2VydmljZS5zZXJ2aWNlX2FjY291bnRfc2VjcmV0fX0iCiAgICB9CiAgfSwKICB7ey9zZXJ2aWNlLnNlcnZpY2VfYWNjb3VudF9zZWNyZXR9fQogICJlbnYiOiB7CiAgICAiUEFDS0FHRV9OQU1FIjogIm15c3FsIiwKICAgICJQQUNLQUdFX1ZFUlNJT04iOiAiNS4wLjUtMiIsCiAgICAiUEFDS0FHRV9CVUlMRF9USU1FX0VQT0NIX01TIjogIjE1NTI1NjIyOTMxNzIiLAogICAgIlBBQ0tBR0VfQlVJTERfVElNRV9TVFIiOiAiVGh1IE1hciAxNCAyMDE5IDExOjE4OjEzICswMDAwIiwKICAgICJGUkFNRVdPUktfTkFNRSI6ICJ7e3NlcnZpY2UubmFtZX19IiwKICAgICJTTEVFUF9EVVJBVElPTiI6ICJ7e3NlcnZpY2Uuc2xlZXB9fSIsCiAgICAiRlJBTUVXT1JLX1VTRVIiOiAie3tzZXJ2aWNlLnVzZXJ9fSIsCiAgICAiRlJBTUVXT1JLX1BSSU5DSVBBTCI6ICJ7e3NlcnZpY2Uuc2VydmljZV9hY2NvdW50fX0iLAogICAgIkZSQU1FV09SS19MT0dfTEVWRUwiOiAie3tzZXJ2aWNlLmxvZ19sZXZlbH19IiwKICAgICJNRVNPU19BUElfVkVSU0lPTiI6ICJWMSIsCiAgICAiTVlTUUxfUk9PVF9QQVNTV09SRCI6ICJ7e2RhdGFiYXNlLnJvb3RfcGFzc3dvcmR9fSIsCiAgICAiTVlTUUxfU0VSX0lNQUdFIjogInt7cmVzb3VyY2UuYXNzZXRzLmNvbnRhaW5lci5kb2NrZXIubXlzcWxzZXJ2ZXJ9fSIsCiAgICAiSEFQUk9YWV9JTUFHRSI6ICJ7e3Jlc291cmNlLmFzc2V0cy5jb250YWluZXIuZG9ja2VyLmhhcHJveHl9fSIsCiAgICAiRVhQT1JURVJfSU1BR0UiOiAie3tyZXNvdXJjZS5hc3NldHMuY29udGFpbmVyLmRvY2tlci5leHBvcnRlcn19IiwKICAgICJGQUlMT1ZFUl9FWFBPUlRFUl9JTUFHRSI6ICJ7e3Jlc291cmNlLmFzc2V0cy5jb250YWluZXIuZG9ja2VyLmZhaWxvdmVyZXhwb3J0ZXJ9fSIsCiAgICAiTVlTUUxGQUlMT1ZFUl9JTUFHRSI6ICJ7e3Jlc291cmNlLmFzc2V0cy5jb250YWluZXIuZG9ja2VyLm15c3FsZmFpbG92ZXJ9fSIsCiAgICAiTUNfVVJJIjogInt7cmVzb3VyY2UuYXNzZXRzLnVyaXMubWMtdXJpfX0iLAogICAgIk1ZU1FMX01BU1RFUl9VUkkiOiAie3t7ZGF0YWJhc2UubWFzdGVyX2NuZn19fSIsCiAgICAiSEFQUk9YWV9VUkkiOiAie3tyZXNvdXJjZS5hc3NldHMudXJpcy5oYXByb3h5LXVyaX19IiwKICAgICJaS19VUkkiOiAie3tyZXNvdXJjZS5hc3NldHMudXJpcy56ay11cml9fSIsCiAgICAiTVlTUUxfRVhFX1VSSSI6ICJ7e3Jlc291cmNlLmFzc2V0cy51cmlzLm15c3FsLWV4ZS11cml9fSIsCiAgICAiTk9ERV9DT1VOVCI6ICJ7e215c3FsLmNvdW50fX0iLAogICAgIlNUSFJFRV9DT01QQVRJQkxFX1VSSSI6ICJ7e3tteXNxbC5iYWNrdXBfc3RvcmVfZW5kcG9pbnR9fX0iLAogICAgIkJBQ0tVUF9TVE9SRV9TRVJWSUNFTkFNRSI6ICJ7e3tteXNxbC5iYWNrdXBfc3RvcmVfc2VydmljZW5hbWV9fX0iLAogICAgIk5PREVfUExBQ0VNRU5UIjogInt7e215c3FsLnBsYWNlbWVudF9jb25zdHJhaW50fX19IiwKICAgICJBQ0NFU1NfS0VZX0lEIjogInt7e215c3FsLnVzZXJuYW1lfX19IiwKICAgICJTRUNSRVRfQUNDRVNTX0tFWSI6ICJ7e3tteXNxbC5wYXNzd29yZH19fSIsCiAgICAiQkFDS1VQX0ZVTExfRlJPTSI6ICJ5eW1tZGRoaG1tc3MtZnVsbCIsCiAgICAiUkVTVE9SRV9UTyI6ICJ5eW1tZGRoaG1tc3MtaW5jIiwKCiAgICB7eyNzZXJ2aWNlLnZpcnR1YWxfbmV0d29ya19lbmFibGVkfX0KICAgICJFTkFCTEVfVklSVFVBTF9ORVRXT1JLIjogInllcyIsCiAgICAiVklSVFVBTF9ORVRXT1JLX05BTUUiOiAie3tzZXJ2aWNlLnZpcnR1YWxfbmV0d29ya19uYW1lfX0iLAogICAgIlZJUlRVQUxfTkVUV09SS19QTFVHSU5fTEFCRUxTIjogInt7c2VydmljZS52aXJ0dWFsX25ldHdvcmtfcGx1Z2luX2xhYmVsc319IiwKICAgIHt7L3NlcnZpY2UudmlydHVhbF9uZXR3b3JrX2VuYWJsZWR9fQogICAgIk5PREVfQ1BVUyI6ICJ7e215c3FsLmNwdXN9fSIsCiAgICAiTk9ERV9NRU0iOiAie3tteXNxbC5tZW19fSIsCiAgICAiSU5OT0RCX0JVRkZFUl9QT09MX1NJWkUiOiAie3tteXNxbC5pbm5vZGJfYnVmZmVyX3Bvb2xfc2l6ZX19IiwKICAgICJOT0RFX0RJU0siOiAie3tteXNxbC5kaXNrfX0iLAogICAgIk5PREVfRElTS19UWVBFIjogInt7bXlzcWwuZGlza190eXBlfX0iLAogICAgIkJBQ0tVUF9ESVNLX1RZUEUiOiAie3tteXNxbC5iYWNrdXBfZGlza190eXBlfX0iLAogICAgIkJBQ0tVUF9OT0RFX0RJU0siOiAie3tteXNxbC5iYWNrdXBfZGlza319IiwKICAgICJSRVNUT1JFX0RJU0tfVFlQRSI6ICJ7e215c3FsLnJlc3RvcmVfZGlza190eXBlfX0iLAogICAgIlJFU1RPUkVfTk9ERV9ESVNLIjogInt7bXlzcWwucmVzdG9yZV9kaXNrfX0iLAoKICAgICJKQVZBX1VSSSI6ICJ7e3Jlc291cmNlLmFzc2V0cy51cmlzLmpyZS10YXItZ3p9fSIsCiAgICAiRVhFQ1VUT1JfVVJJIjogInt7cmVzb3VyY2UuYXNzZXRzLnVyaXMuZXhlY3V0b3ItemlwfX0iLAogICAgIkJPT1RTVFJBUF9VUkkiOiAie3tyZXNvdXJjZS5hc3NldHMudXJpcy5ib290c3RyYXAtemlwfX0iLAogICAge3sjc2VydmljZS5zZXJ2aWNlX2FjY291bnRfc2VjcmV0fX0KICAgICJEQ09TX1NFUlZJQ0VfQUNDT1VOVF9DUkVERU5USUFMIjogeyAic2VjcmV0IjogInNlcnZpY2VDcmVkZW50aWFsIiB9LAogICAgIk1FU09TX01PRFVMRVMiOiAie1wibGlicmFyaWVzXCI6W3tcImZpbGVcIjpcImxpYm1lc29zLWJ1bmRsZVwvbGliXC9tZXNvc1wvbGliZGNvc19zZWN1cml0eS5zb1wiLFwibW9kdWxlc1wiOlt7XCJuYW1lXCI6IFwiY29tX21lc29zcGhlcmVfZGNvc19DbGFzc2ljUlBDQXV0aGVudGljYXRlZVwifSx7XCJuYW1lXCI6XCJjb21fbWVzb3NwaGVyZV9kY29zX2h0dHBfQXV0aGVudGljYXRlZVwiLFwicGFyYW1ldGVyc1wiOlt7XCJrZXlcIjpcImp3dF9leHBfdGltZW91dFwiLFwidmFsdWVcIjpcIjVtaW5zXCJ9LHtcImtleVwiOlwicHJlZW1wdGl2ZV9yZWZyZXNoX2R1cmF0aW9uXCIsXCJ2YWx1ZVwiOlwiMzBtaW5zXCJ9XX1dfV19IiwKICAgICJNRVNPU19BVVRIRU5USUNBVEVFIjogImNvbV9tZXNvc3BoZXJlX2Rjb3NfQ2xhc3NpY1JQQ0F1dGhlbnRpY2F0ZWUiLAogICAgIk1FU09TX0hUVFBfQVVUSEVOVElDQVRFRSI6ICJjb21fbWVzb3NwaGVyZV9kY29zX2h0dHBfQXV0aGVudGljYXRlZSIsCiAgICB7ey9zZXJ2aWNlLnNlcnZpY2VfYWNjb3VudF9zZWNyZXR9fQogICAgIkxJQk1FU09TX1VSSSI6ICJ7e3Jlc291cmNlLmFzc2V0cy51cmlzLmxpYm1lc29zLWJ1bmRsZS10YXItZ3p9fSIKICB9LAogICJ1cmlzIjogWwogICAgInt7cmVzb3VyY2UuYXNzZXRzLnVyaXMuYm9vdHN0cmFwLXppcH19IiwKICAgICJ7e3Jlc291cmNlLmFzc2V0cy51cmlzLmpyZS10YXItZ3p9fSIsCiAgICAie3tyZXNvdXJjZS5hc3NldHMudXJpcy5zY2hlZHVsZXItemlwfX0iLAogICAgInt7cmVzb3VyY2UuYXNzZXRzLnVyaXMubGlibWVzb3MtYnVuZGxlLXRhci1nen19IgogIF0sCiAgInVwZ3JhZGVTdHJhdGVneSI6ewogICAgIm1pbmltdW1IZWFsdGhDYXBhY2l0eSI6IDAsCiAgICAibWF4aW11bU92ZXJDYXBhY2l0eSI6IDAKICB9LAogICJoZWFsdGhDaGVja3MiOiBbCiAgICB7CiAgICAgICJwcm90b2NvbCI6ICJNRVNPU19IVFRQIiwKICAgICAgInBhdGgiOiAiL3YxL2hlYWx0aCIsCiAgICAgICJncmFjZVBlcmlvZFNlY29uZHMiOiA5MDAsCiAgICAgICJpbnRlcnZhbFNlY29uZHMiOiAzMCwKICAgICAgInBvcnRJbmRleCI6IDAsCiAgICAgICJ0aW1lb3V0U2Vjb25kcyI6IDMwLAogICAgICAibWF4Q29uc2VjdXRpdmVGYWlsdXJlcyI6IDAKICAgIH0KICBdLAogICJwb3J0RGVmaW5pdGlvbnMiOiBbCiAgICB7CiAgICAgICJwb3J0IjogMzMwNiwKICAgICAgInByb3RvY29sIjogInRjcCIsCiAgICAgICJuYW1lIjogImFwaSIsCiAgICAgICJsYWJlbHMiOiB7ICJWSVBfMCI6ICIvYXBpLnt7c2VydmljZS5uYW1lfX06MzMwNiIgfQogICAgfQogIF0KfQo="
+  },
+  "resource": {
+    "assets": {
+      "uris": {
+        "jre-tar-gz": "https://downloads.mesosphere.com/java/openjdk-jre-8u212b03-hotspot-linux-x64.tar.gz",
+        "libmesos-bundle-tar-gz": "https://downloads.mesosphere.com/libmesos-bundle/libmesos-bundle-1.12.0.tar.gz",
+        "bootstrap-zip": "https://downloads.mesosphere.com/dcos-commons/artifacts/0.56.2/bootstrap.zip",
+        "scheduler-zip": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mysql/20191216-043920-NZWnJamiJKPwqg6d/operator-scheduler.zip",
+        "mc-uri": "https://dl.minio.io/client/mc/release/linux-amd64/mc",
+        "mysql-exe-uri": "https://www.cuucloud.com/mysql-exe.tar.gz",
+        "haproxy-uri": "https://www.cuucloud.com/haproxy.cfg",
+        "zk-uri": "https://s3-ap-northeast-1.amazonaws.com/pxc-utils/zookeepercli-linux-amd64-binary.tar.gz"
+      },
+      "container": {
+        "docker": {
+          "mysqlserver": "darrel999/mysql-xtrabackup:latest",
+          "haproxy": "darrel999/haproxy-docker-logging:2.0.8",
+          "mysqlfailover": "darrel999/failover:v1.6.5",
+          "failoverexporter": "darrel999/failover-exporter:v1.0",
+          "exporter": "prom/mysqld-exporter:v0.12.1"
+        }
+      }
+    },
+    "images": {
+      "icon-small": "https://downloads.mesosphere.com/assets/universe/000/mysql-icon-small.png",
+      "icon-medium": "https://downloads.mesosphere.com/assets/universe/000/mysql-icon-medium.png",
+      "icon-large": "https://downloads.mesosphere.com/assets/universe/000/mysql-icon-large.png"
+    },
+    "cli": {
+      "binaries": {
+        "darwin": {
+          "x86-64": {
+            "contentHash": [
+              {
+                "algo": "sha256",
+                "value": "7b2fd3baa78bb2b69cd36a8f6f7a2a84b81d237e76ff5a05e4551bb1ee65bde2"
+              }
+            ],
+            "kind": "executable",
+            "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mysql/20191216-043920-NZWnJamiJKPwqg6d/dcos-service-cli-darwin"
+          }
+        },
+        "linux": {
+          "x86-64": {
+            "contentHash": [
+              {
+                "algo": "sha256",
+                "value": "004a0fa74c3445b5fe260df5cfed3749123d8a0195f2666926db384fb5bd15fa"
+              }
+            ],
+            "kind": "executable",
+            "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mysql/20191216-043920-NZWnJamiJKPwqg6d/dcos-service-cli-linux"
+          }
+        },
+        "windows": {
+          "x86-64": {
+            "contentHash": [
+              {
+                "algo": "sha256",
+                "value": "869baed9de8f026c1d6d19755404b4982fafe97bbfa2bdf7df8fab447d6fcc7c"
+              }
+            ],
+            "kind": "executable",
+            "url": "https://hge-dcos.s3.amazonaws.com/autodelete7d/mysql/20191216-043920-NZWnJamiJKPwqg6d/dcos-service-cli.exe"
+          }
+        }
+      }
+    }
+  }
+}
